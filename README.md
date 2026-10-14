@@ -73,41 +73,13 @@ A prebuilt binary is in [`firmware/IterumVersio.bin`](firmware/IterumVersio.bin)
 
 1. Connect the Versio to your computer via the USB port of the Daisy Seed on the back of the module.
 2. Put the Seed in DFU mode: hold **BOOT**, press and release **RESET**, then release **BOOT**.
-3. Flash it with the [Electro-Smith Web Programmer](https://flash.daisy.audio/) (Chrome/Edge), or with `make program-dfu` from the repository.
+3. Flash it with the [Electro-Smith Web Programmer](https://flash.daisy.audio/) (Chrome/Edge), or with `make program-dfu` after building from source (see [BUILD.md](BUILD.md)).
 
 Before flashing, make sure you have a copy of the original Noise Engineering firmware so you can go back at any time.
 
 ## Building from source
 
-You need the `arm-none-eabi-gcc` toolchain (the [Daisy Toolchain](https://github.com/electro-smith/DaisyToolchain) installs it on macOS and Windows; on Linux use your distribution's package or the xPack build).
-
-```bash
-git clone https://github.com/<your-user>/iterum-versio
-cd iterum-versio
-
-# libraries (or add them as submodules, see below)
-git clone --recurse-submodules https://github.com/electro-smith/libDaisy lib/libDaisy
-git clone https://github.com/electro-smith/DaisySP lib/DaisySP
-
-make -C lib/libDaisy
-make -C lib/DaisySP
-make                 # -> build/IterumVersio.bin
-make program-dfu     # optional: flash over USB
-```
-
-To track the libraries as submodules instead:
-
-```bash
-git submodule add https://github.com/electro-smith/libDaisy lib/libDaisy
-git submodule add https://github.com/electro-smith/DaisySP lib/DaisySP
-git submodule update --init --recursive
-```
-
-If you keep the libraries elsewhere: `make LIBDAISY_DIR=/path/to/libDaisy DAISYSP_DIR=/path/to/DaisySP`.
-
-### Knob and switch mapping
-
-The mapping assumes panel knob *n* is `KNOB_(n-1)` in libDaisy, and that positions A and X are read as `POS_UP`. If anything is swapped on your unit, edit the `K_...` and `SW_...` constants at the top of `src/IterumVersio.cpp` and rebuild.
+See [BUILD.md](BUILD.md) for the toolchain, the libraries, how to compile and flash, and how to adjust the knob and switch mapping.
 
 ## Panel
 
@@ -127,7 +99,6 @@ The SVG is drawn at real 10HP size (50.5 × 128.5 mm). **Hole positions were mea
 - Reverse: two overlapping grains with a sin² window, each as long as the delay; each grain plays the just-recorded segment backwards
 - Feedback path: DJ filter (2-pole TPT state-variable filter, Butterworth response), DC blocker, soft saturation; soft limiter above 0.8 on the outputs
 - LEDs use libDaisy's software PWM, updated 4000 times per second
-
 
 ## License
 
