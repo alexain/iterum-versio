@@ -69,7 +69,7 @@ Every knob has a matching CV input (jacks 1–7), summed with the knob.
 
 ## Installing
 
-A prebuilt binary is in [`firmware/IterumVersio.bin`](firmware/IterumVersio.bin).
+The prebuilt firmware binary is available for download from the [Releases page](releases/latest).
 
 1. Connect the Versio to your computer via the USB port of the Daisy Seed on the back of the module.
 2. Put the Seed in DFU mode: hold **BOOT**, press and release **RESET**, then release **BOOT**.
