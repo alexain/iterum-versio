@@ -1,0 +1,5 @@
+build/
+lib/libDaisy/
+lib/DaisySP/
+__pycache__/
+.DS_Store

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50.5mm" height="128.5mm" viewBox="0 0 50.5 128.5">
+<rect width="50.5" height="128.5" fill="#0d0d0d"/>
+<text x="25.25" y="7.40" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="5.2" font-weight="800" fill="#f2efe8" text-anchor="middle" letter-spacing="0.9">ITERUM</text>
+<text x="25.25" y="10.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="3.0" font-weight="400" fill="#8a8780" text-anchor="middle" letter-spacing="1.6" font-style="italic">versio</text>
+<text x="19.10" y="12.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.85" font-weight="600" fill="#8a8780" text-anchor="middle" letter-spacing="0.2">L · R</text>
+<text x="29.00" y="12.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.75" font-weight="600" fill="#8a8780" text-anchor="middle" letter-spacing="0.0">FILT</text>
+<text x="34.00" y="12.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.75" font-weight="600" fill="#8a8780" text-anchor="middle" letter-spacing="0.0">FRZ</text>
+<circle cx="16.6" cy="15.3" r="1.55" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<circle cx="21.6" cy="15.3" r="1.55" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<circle cx="29.0" cy="15.3" r="1.55" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<circle cx="34.0" cy="15.3" r="1.55" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M5.225,26.806 A5.55,5.55 0 1 1 10.775,26.806" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<text x="3.40" y="28.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.9" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">DRY</text>
+<text x="12.60" y="28.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.9" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">WET</text>
+<rect x="6.40" y="28.05" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="8.00" y="30.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">1</text><text x="8.00" y="33.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">MIX</text>
+<circle cx="8.0" cy="22.0" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M39.725,26.806 A5.55,5.55 0 1 1 45.275,26.806" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<path d="M47.400,24.606 A5.55,5.55 0 0 1 45.275,26.806" fill="none" stroke="#e8b04a" stroke-width="0.7"/>
+<text x="47.95" y="28.35" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.4" font-weight="700" fill="#e8b04a" text-anchor="middle" letter-spacing="0.0">∞</text>
+<rect x="40.90" y="28.05" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="42.50" y="30.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">5</text><text x="42.50" y="33.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">FEEDBACK</text>
+<circle cx="42.5" cy="22.0" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M22.475,36.806 A5.55,5.55 0 1 1 28.025,36.806" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<circle cx="25.25" cy="26.45" r="0.45" fill="#f2efe8"/>
+<text x="19.87" y="38.37" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.2" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">÷</text>
+<text x="30.63" y="38.37" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.2" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">×</text>
+<rect x="23.65" y="38.05" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="25.25" y="40.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">3</text><text x="25.25" y="43.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">TIME</text>
+<circle cx="25.25" cy="32.0" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M5.225,46.806 A5.55,5.55 0 1 1 10.775,46.806" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<circle cx="8.00" cy="36.45" r="0.45" fill="#f2efe8"/>
+<text x="1.89" y="47.47" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.95" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">R−</text>
+<text x="14.11" y="47.47" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.95" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">L−</text>
+<rect x="6.40" y="48.05" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="8.00" y="50.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">2</text><text x="8.00" y="53.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">SKEW</text>
+<circle cx="8.0" cy="42.0" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M39.725,46.806 A5.55,5.55 0 1 1 45.275,46.806" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<path d="M39.396,46.601 A5.55,5.55 0 0 1 37.052,40.941" fill="none" stroke="#f2efe8" stroke-width="0.45"/>
+<path d="M37.252,40.193 A5.55,5.55 0 0 1 42.113,36.464" fill="none" stroke="#f2efe8" stroke-width="0.45"/>
+<path d="M42.887,36.464 A5.55,5.55 0 0 1 47.748,40.193" fill="none" stroke="#f2efe8" stroke-width="0.45"/>
+<path d="M47.948,40.941 A5.55,5.55 0 0 1 45.604,46.601" fill="none" stroke="#f2efe8" stroke-width="0.45"/>
+<text x="36.98" y="48.42" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.9" font-weight="600" fill="#8a8780" text-anchor="middle" letter-spacing="0.0">ms</text>
+<text x="48.02" y="48.42" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.9" font-weight="600" fill="#8a8780" text-anchor="middle" letter-spacing="0.0">60s</text>
+<rect x="40.90" y="48.05" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="42.50" y="50.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">6</text><text x="42.50" y="53.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">RANGE</text>
+<circle cx="42.5" cy="42.0" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M22.475,56.806 A5.55,5.55 0 1 1 28.025,56.806" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<path d="M22.475,56.806 A5.55,5.55 0 0 1 24.286,46.534" fill="none" stroke="#f2efe8" stroke-width="0.45"/>
+<path d="M26.214,46.534 A5.55,5.55 0 0 1 28.025,56.806" fill="none" stroke="#f2efe8" stroke-width="0.45"/>
+<text x="21.35" y="59.70" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.1" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">LP</text>
+<text x="29.15" y="59.70" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.1" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">HP</text>
+<rect x="23.65" y="58.05" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="25.25" y="60.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">4</text><text x="25.25" y="63.90" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">FILTER</text>
+<circle cx="25.25" cy="52.0" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M39.725,67.306 A5.55,5.55 0 1 1 45.275,67.306" fill="none" stroke="#8a8780" stroke-width="0.25"/>
+<text x="36.64" y="68.86" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.9" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">FWD</text>
+<text x="48.36" y="68.86" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.9" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.0">REV</text>
+<circle cx="39.72" cy="67.31" r="0.18" fill="#f2efe8"/>
+<circle cx="37.37" cy="64.62" r="0.22" fill="#f2efe8"/>
+<circle cx="37.14" cy="61.06" r="0.26" fill="#f2efe8"/>
+<circle cx="39.12" cy="58.10" r="0.30" fill="#f2efe8"/>
+<circle cx="42.50" cy="56.95" r="0.34" fill="#f2efe8"/>
+<circle cx="45.88" cy="58.10" r="0.38" fill="#f2efe8"/>
+<circle cx="47.86" cy="61.06" r="0.42" fill="#f2efe8"/>
+<circle cx="47.63" cy="64.62" r="0.46" fill="#f2efe8"/>
+<circle cx="45.27" cy="67.31" r="0.50" fill="#f2efe8"/>
+<rect x="40.90" y="68.55" width="3.2" height="3.2" rx="0.5" fill="#f2efe8"/><text x="42.50" y="70.80" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.0">7</text><text x="42.50" y="74.40" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.3" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.15">REVERSE</text>
+<circle cx="42.5" cy="62.5" r="3.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="12.30" y="56.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.8" font-weight="800" fill="#f2efe8" text-anchor="start" letter-spacing="0.1">ROUTE</text>
+<text x="12.30" y="58.60" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.7" font-weight="500" fill="#f2efe8" text-anchor="start" letter-spacing="0.05">PING</text>
+<text x="12.30" y="60.65" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.7" font-weight="500" fill="#8a8780" text-anchor="start" letter-spacing="0.05">STEREO</text>
+<text x="12.30" y="62.70" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.7" font-weight="500" fill="#f2efe8" text-anchor="start" letter-spacing="0.05">CROSS</text>
+<line x1="11.2" y1="58.0" x2="11.2" y2="62.8" stroke="#8a8780" stroke-width="0.2"/>
+<circle cx="8.0" cy="59.0" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="12.30" y="65.80" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.8" font-weight="800" fill="#f2efe8" text-anchor="start" letter-spacing="0.1">CHANGE</text>
+<text x="12.30" y="68.10" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.7" font-weight="500" fill="#f2efe8" text-anchor="start" letter-spacing="0.05">TAPE</text>
+<text x="12.30" y="70.15" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.7" font-weight="500" fill="#8a8780" text-anchor="start" letter-spacing="0.05">FADE</text>
+<text x="12.30" y="72.20" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="1.7" font-weight="500" fill="#f2efe8" text-anchor="start" letter-spacing="0.05">JUMP</text>
+<line x1="11.2" y1="67.5" x2="11.2" y2="72.3" stroke="#8a8780" stroke-width="0.2"/>
+<circle cx="8.0" cy="68.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<rect x="20.05" y="74.0" width="10.4" height="3.2" rx="1.6" fill="#e8b04a"/>
+<text x="25.25" y="76.35" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.0" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.25">FREEZE</text>
+<circle cx="25.25" cy="70.0" r="3.4" fill="none" stroke="#f2efe8" stroke-width="0.35"/>
+<line x1="4" y1="77.2" x2="46.5" y2="77.2" stroke="#8a8780" stroke-width="0.2"/>
+<text x="6.20" y="80.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">MIX</text>
+<circle cx="6.2" cy="85.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="18.90" y="80.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">TIME</text>
+<circle cx="18.9" cy="85.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="31.60" y="80.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">FDBK</text>
+<circle cx="31.6" cy="85.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="44.30" y="80.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">REV</text>
+<circle cx="44.3" cy="85.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="6.20" y="93.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">SKEW</text>
+<circle cx="6.2" cy="98.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="18.90" y="93.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">FILTER</text>
+<circle cx="18.9" cy="98.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="31.60" y="93.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">RANGE</text>
+<circle cx="31.6" cy="98.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="44.30" y="93.30" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#e8b04a" text-anchor="middle" letter-spacing="0.1">CLOCK</text>
+<circle cx="44.3" cy="98.5" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="6.20" y="106.80" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">IN L</text>
+<circle cx="6.2" cy="112.0" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<text x="18.90" y="106.80" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="700" fill="#f2efe8" text-anchor="middle" letter-spacing="0.1">IN R</text>
+<circle cx="18.9" cy="112.0" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<rect x="26.60" y="104.35" width="10.0" height="3.3" rx="0.5" fill="#f2efe8"/>
+<text x="31.60" y="106.80" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.1">OUT L</text>
+<circle cx="31.6" cy="112.0" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<rect x="39.30" y="104.35" width="10.0" height="3.3" rx="0.5" fill="#f2efe8"/>
+<text x="44.30" y="106.80" font-family="Inter, 'DejaVu Sans', sans-serif" font-size="2.15" font-weight="800" fill="#0d0d0d" text-anchor="middle" letter-spacing="0.1">OUT R</text>
+<circle cx="44.3" cy="112.0" r="3.0" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<path d="M10.5,113.6 L14.299999999999999,113.6" stroke="#f2efe8" stroke-width="0.35"/>
+<path d="M14.299999999999999,113.6 l-1.1,-0.7 l0,1.4 z" fill="#f2efe8"/>
+<ellipse cx="7.5" cy="3.0" rx="2.6" ry="1.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<ellipse cx="43.0" cy="3.0" rx="2.6" ry="1.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<ellipse cx="7.5" cy="125.5" rx="2.6" ry="1.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+<ellipse cx="43.0" cy="125.5" rx="2.6" ry="1.6" fill="none" stroke="#ff2a6d" stroke-width="0.1"/>
+</svg>
