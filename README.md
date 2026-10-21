@@ -21,7 +21,7 @@ An alternative firmware for the **Noise Engineering Versio** Eurorack platform: 
 - **Probabilistic reverse**: each repeat chooses its direction at random
 - **Freeze** on the FSU button: loops the buffer indefinitely, up to 60 s
 - **DJ filter** (12 dB/oct low-pass / high-pass) in the feedback path
-- Feedback up to 110 %, held by soft saturation; soft limiter on the outputs
+- Feedback up to 110 %, held by soft saturation; peak limiter on the outputs
 
 ## Controls
 
@@ -42,8 +42,8 @@ Every knob has a matching CV input (jacks 1–7), summed with the knob.
 | 3 | **TIME** | time within the selected range (exponential) | ratio to the clock: 1/16, 1/12, 1/8, 1/6, 1/4, 1/3, 3/8, 1/2, 2/3, 3/4, **1** (noon), 4/3, 3/2, 2, 3, 4, 6, 8, 12, 16 |
 | 4 | **FILTER** | left = low-pass (20 kHz → 500 Hz), centre = off, right = high-pass (20 Hz → 1.2 kHz). It sits inside the feedback loop, so each repeat is filtered again | |
 | 5 | **FEEDBACK** | 0–110 %. Above 100 % the repeats build up and are held by soft saturation | |
-| 6 | **RANGE** | 4 zones: 5–100 ms · 50–600 ms · 0.3–3 s · 1.5–60 s | ignored |
-| 7 | **REVERSE** | fully left = always forward, fully right = always reversed. In between, each repeat is reversed with a probability equal to the knob position | |
+| 6 | **RANGE** | 4 zones: 5–100 ms · 50–600 ms · 0.3–3 s · 1.5–60 s | shifts the TIME ratios by octaves: ÷4, ÷2, ×1 (noon), ×2 |
+| 7 | **REVERSE** | first 10 % of travel = always forward, last 10 % = always reversed. In between, each repeat is reversed with a probability that grows with the knob | |
 
 **ABC — ROUTE**
 - **A · Ping-pong**: the input is summed to mono and enters on the left, then bounces L → R → L
@@ -56,20 +56,22 @@ Every knob has a matching CV input (jacks 1–7), summed with the knob.
 - **Z · Jump**: near-instant (3 ms) switch, good for glitches and stutters
 
 **FSU**
-- **Jack**: external clock. The period is measured between two rising edges; the last tempo is kept if the clock stops
+- **Jack**: external clock. The period is measured between rising edges and averaged, so small clock jitter does not disturb the repeats; real tempo changes are followed at once. The last tempo is kept if the clock stops: the module stays in clocked mode (cyan LEDs) until you hold the button
 - **Button**: toggles **freeze**. The buffer is looped at the current delay length (up to 60 s); input and feedback are muted. TIME, CHANGE and REVERSE keep working on the frozen material, the filter only affects the output
 - **Button held 1.5 s**: back to free-running time (the freeze state is left unchanged)
 
 **In 1** is normalled to **In 2**: patch a single cable into In 1 for a mono source.
 
 **LEDs** (left to right)
-1. **Left repeats** — 2. **Right repeats**: each blinks when a repeat arrives on its side. White = forward (free-running), cyan = forward (clocked), violet = reversed. When clocked, blinks are locked to the incoming clock
+1. **Left repeats** — 2. **Right repeats**: each blinks when a repeat arrives on its side. White = forward (free-running), cyan = forward (clocked), violet = reversed. When clocked, blinks are locked to the incoming clock. Below 100 ms the repeats are too fast to blink, so the LEDs stay steadily lit
 3. **Filter**: orange = low-pass, light blue = high-pass, brighter as it closes; off at centre
 4. **Status**: solid red = freeze, pulsing red = feedback above 100 %
 
+**LED brightness**: hold the FSU button while powering the case on to cycle between bright, dim and off. All four LEDs confirm the new level for one second (a short red blink means "off"). The setting is saved and kept across power cycles.
+
 ## Installing
 
-The prebuilt firmware binary is available for download from the [Releases page](https://github.com/alexain/iterum-versio/releases).
+A prebuilt binary is in [`firmware/IterumVersio.bin`](firmware/IterumVersio.bin).
 
 1. Connect the Versio to your computer via the USB port of the Daisy Seed on the back of the module.
 2. Put the Seed in DFU mode: hold **BOOT**, press and release **RESET**, then release **BOOT**.
@@ -97,8 +99,15 @@ The SVG is drawn at real 10HP size (50.5 × 128.5 mm). **Hole positions were mea
 - Buffers: 2 × 4,194,304 float samples in SDRAM (32 of 64 MB)
 - Forward reads use 4-point Hermite interpolation. In Tape mode the time follows the knob with ~250 ms slew and the "tape speed" is limited between −3× and +5×
 - Reverse: two overlapping grains with a sin² window, each as long as the delay; each grain plays the just-recorded segment backwards
-- Feedback path: DJ filter (2-pole TPT state-variable filter, Butterworth response), DC blocker, soft saturation; soft limiter above 0.8 on the outputs
+- Feedback path: DJ filter (2-pole TPT state-variable filter, Butterworth response), DC blocker, soft saturation
+- Output: equal-power mix with extra headroom around noon, then a stereo-linked peak limiter (instant attack, 150 ms release, about −1 dBFS) and a gentle safety clip
+- TIME and SKEW are smoothed (20 ms) and pass through a deadband, so pot and CV noise never moves a delay that should be standing still
+- The LED brightness setting is stored in the last 4 KB sector of the QSPI flash
 - LEDs use libDaisy's software PWM, updated 4000 times per second
+
+## Changes
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

@@ -10,6 +10,7 @@
 // =============================================================================
 
 #include "daisy_versio.h"
+#include "util/PersistentStorage.h"
 #include <cmath>
 #include <cstring>
 
@@ -34,6 +35,23 @@ static float DSY_SDRAM_BSS bufL[BUF_SIZE];
 static float DSY_SDRAM_BSS bufR[BUF_SIZE];
 
 DaisyVersio hw;
+
+// -----------------------------------------------------------------------------
+//  Settings saved in QSPI flash (last 4 KB sector of the 8 MB chip)
+// -----------------------------------------------------------------------------
+struct Settings
+{
+    uint32_t magic    = 0x49545631; // "ITV1"
+    uint32_t ledLevel = 0;          // 0 = bright, 1 = dim, 2 = off
+    bool operator==(const Settings& o) const
+    {
+        return magic == o.magic && ledLevel == o.ledLevel;
+    }
+    bool operator!=(const Settings& o) const { return !(*this == o); }
+};
+static constexpr uint32_t SETTINGS_ADDR = 0x7FF000;
+static const float        kLedLevels[3] = {1.f, 0.45f, 0.f};
+static float              ledScale      = 1.f;
 
 // -----------------------------------------------------------------------------
 //  Panel map (number printed on the panel = KNOB_(n-1))
@@ -73,15 +91,64 @@ static inline float SoftClip(float x)
     return x - (x * x * x) * (1.f / 6.75f);
 }
 
-// Output limiter: transparent below 0.8, then a soft knee towards 1
-static inline float OutLimit(float x)
+// Safety clip used after the output limiter: transparent below 0.95
+static inline float SafetyClip(float x)
 {
     float a = fabsf(x);
-    if(a <= 0.8f)
+    if(a <= 0.95f)
         return x;
-    float y = 0.8f + 0.2f * tanhf((a - 0.8f) * 5.f);
+    float y = 0.95f + 0.05f * tanhf((a - 0.95f) * 20.f);
     return x < 0.f ? -y : y;
 }
+
+// Stereo-linked peak limiter: instant attack, smooth release. It turns the
+// level down instead of distorting; a gentle safety clip catches the rest.
+struct Limiter
+{
+    float gain = 1.f;
+    float rel  = 0.f;
+    void  Init(float sr) { rel = 1.f - expf(-1.f / (0.15f * sr)); } // 150 ms
+    inline void Process(float& l, float& r)
+    {
+        const float thr  = 0.89f; // about -1 dBFS
+        float       peak = fmaxf(fabsf(l), fabsf(r));
+        float       want = (peak * gain > thr) ? thr / peak : 1.f;
+        if(want < gain)
+            gain = want;                 // attack: immediate
+        else
+            gain += (1.f - gain) * rel;  // release: back to unity
+        if(gain > want)
+            gain = want;
+        l = SafetyClip(l * gain);
+        r = SafetyClip(r * gain);
+    }
+};
+
+// Deadband on a knob: a light 20 ms smoothing, then a deadband that follows
+// the knob while it moves and ignores the small electrical noise of a pot
+// (or CV) that is standing still. Called once per audio block.
+struct Deadband
+{
+    float v    = -1.f;
+    float lp   = 0.f;
+    float Process(float x, float th = 0.004f)
+    {
+        static const float a = 1.f - expf(-1.f / (0.02f * SR / BLOCK));
+        if(v < 0.f)
+        {
+            lp = x;
+            v  = x;
+            return v;
+        }
+        lp += (x - lp) * a;
+        x = lp;
+        if(x > v + th)
+            v = x - th;
+        else if(x < v - th)
+            v = x + th;
+        return v;
+    }
+};
 
 static uint32_t rng_state = 0x1234567u;
 static inline float Rand01()
@@ -331,6 +398,7 @@ static uint32_t wpos = 0;
 // -----------------------------------------------------------------------------
 static bool     clocked       = false;
 static float    clockPeriod   = SR; // samples
+static float    clockAvg      = SR; // running average of the intervals
 static uint32_t sinceEdge     = 0;
 static uint32_t edgeCount     = 0;
 static bool     lastGate      = false;
@@ -359,7 +427,12 @@ static const Zone kZones[] = {{0.005f, 0.1f}, // comb, flanger, Karplus
                               {1.5f, 60.f}};  // loops and soundscapes
 static constexpr int kNumZones = 4;
 
-static Stepper stTime, stZone, stSkew;
+static Stepper  stTime, stZone, stSkew, stOct;
+static Deadband dbTime, dbSkew;
+static Limiter  limiter;
+
+// Clocked RANGE: shifts the TIME ratios by octaves
+static const float kOctShift[] = {0.25f, 0.5f, 1.f, 2.f};
 static uint32_t lockIdx = 0;     // edges counted since the clock locked
 static bool     resync  = false; // an edge arrived in this block
 
@@ -369,11 +442,21 @@ static void OnClockEdge()
        && sinceEdge < (uint32_t)MAX_DELAY)
     {
         float p = (float)sinceEdge;
-        // small hysteresis: ignore jitter below 1%
-        if(!clocked || fabsf(p - clockPeriod) > 0.01f * clockPeriod)
+        // tempo estimate: a real tempo change (> 5%) is followed at once;
+        // smaller differences go into a running average, and the period in
+        // use only changes when that average moves by more than 0.5%
+        // (clock jitter would otherwise retrigger crossfades on every beat)
+        if(!clocked || fabsf(p - clockPeriod) > 0.05f * clockPeriod)
+        {
             clockPeriod = p;
+            clockAvg    = p;
+        }
         else
-            clockPeriod = 0.5f * (clockPeriod + p);
+        {
+            clockAvg += (p - clockAvg) * 0.25f;
+            if(fabsf(clockAvg - clockPeriod) > 0.005f * clockPeriod)
+                clockPeriod = clockAvg;
+        }
         if(!clocked)
             lockIdx = 0;
         else
@@ -395,6 +478,8 @@ static volatile bool  ledFreeze = false, ledOverFb = false;
 static double         blinkPh[2]  = {0.0, 0.0}; // beat phase (samples)
 static double         blinkAge[2] = {0.0, 0.0}; // samples since the last blink
 static double         blinkHold[2] = {0.0, 0.0}; // remaining on-time (samples)
+static volatile bool  ledSteady[2] = {false, false}; // repeats too fast to blink
+static constexpr float kSteadyBelow = 0.1f * SR;     // 100 ms
 
 // -----------------------------------------------------------------------------
 //  Audio callback
@@ -433,13 +518,18 @@ static void AudioCallback(AudioHandle::InputBuffer  in,
     }
 
     // ---- read controls
-    const float kTime   = hw.GetKnobValue(K_TIME);
+    const float kTime   = dbTime.Process(hw.GetKnobValue(K_TIME));
     const float kFb     = hw.GetKnobValue(K_FEEDBACK);
     const float kMix    = hw.GetKnobValue(K_MIX);
     const float kFilt   = hw.GetKnobValue(K_FILTER);
     const float kRange  = hw.GetKnobValue(K_RANGE);
-    const float kSkew   = hw.GetKnobValue(K_SKEW);
-    const float kRev    = hw.GetKnobValue(K_REVERSE);
+    const float kSkew   = dbSkew.Process(hw.GetKnobValue(K_SKEW));
+    // REVERSE: first 10% = always forward, last 10% = always reversed,
+    // probability in between
+    const float kRevRaw = hw.GetKnobValue(K_REVERSE);
+    const float kRev    = (kRevRaw < 0.1f)   ? 0.f
+                          : (kRevRaw > 0.9f) ? 1.f
+                                             : (kRevRaw - 0.1f) / 0.8f;
 
     // ABC: A = ping-pong, B (centre) = stereo, C = cross
     const int routing = hw.sw[SW_ROUTING].Read();
@@ -456,7 +546,8 @@ static void AudioCallback(AudioHandle::InputBuffer  in,
     if(clocked)
     {
         int idx = stTime.Process(kTime, kNumRatios);
-        base    = clockPeriod * kRatios[idx];
+        int oct = stOct.Process(kRange, 4); // noon = x1
+        base    = clockPeriod * kRatios[idx] * kOctShift[oct];
         while(base > MAX_DELAY)
             base *= 0.5f;
         int sk = stSkew.Process(kSkew, kNumSkewSteps) - 4; // -4..+4
@@ -484,9 +575,13 @@ static void AudioCallback(AudioHandle::InputBuffer  in,
     // ---- feedback (above 1 = self-oscillation held by the saturation)
     const float fb = kFb * 1.1f;
 
-    // ---- mix equal power
-    const float dryG = cosf(kMix * HALF_PI);
-    const float wetG = sinf(kMix * HALF_PI);
+    // ---- mix: equal power, with some headroom around noon
+    //      (dry + wet peak goes from 1.41 to 1.19 when both are correlated)
+    const float dryE = cosf(kMix * HALF_PI);
+    const float wetE = sinf(kMix * HALF_PI);
+    const float mixN = 1.f / sqrtf(dryE + wetE);
+    const float dryG = dryE * mixN;
+    const float wetG = wetE * mixN;
 
     // ---- DJ filter: left LP (20 kHz -> 500 Hz), centre off,
     //      right HP (20 Hz -> 1.2 kHz). Slightly finer curve near the centre.
@@ -580,8 +675,11 @@ static void AudioCallback(AudioHandle::InputBuffer  in,
         }
         wpos = (wpos + 1) & BUF_MASK;
 
-        out[0][i] = OutLimit(dryG * inL + wetG * fw[0]);
-        out[1][i] = OutLimit(dryG * inR + wetG * fw[1]);
+        float oL = dryG * inL + wetG * fw[0];
+        float oR = dryG * inR + wetG * fw[1];
+        limiter.Process(oL, oR);
+        out[0][i] = oL;
+        out[1][i] = oR;
     }
 
     // ---- LEDs: beat of each side, locked to the clock
@@ -621,7 +719,10 @@ static void AudioCallback(AudioHandle::InputBuffer  in,
             {
                 blinkHold[c] -= (double)size;
             }
-            ledBlink[c] = (blinkHold[c] > 0.0) ? 1.f : 0.f;
+            ledBlink[c]  = (blinkHold[c] > 0.0) ? 1.f : 0.f;
+            ledSteady[c] = D[c] < (double)kSteadyBelow;
+            if(ledSteady[c])
+                ledBlinkRev[c] = ln[c]->revGain;
         }
         resync = false;
     }
@@ -639,6 +740,50 @@ int main(void)
     hw.Init(true); // 480 MHz
     hw.SetAudioBlockSize(BLOCK);
     hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
+
+    // ---- settings: hold FSU while powering up to cycle the LED brightness
+    //      (bright -> dim -> off), saved in flash
+    static PersistentStorage<Settings> storage(hw.seed.qspi);
+    Settings defaults;
+    storage.Init(defaults, SETTINGS_ADDR);
+    Settings& cfg = storage.GetSettings();
+    if(cfg.magic != defaults.magic || cfg.ledLevel > 2)
+        cfg = defaults;
+
+    for(int i = 0; i < 20; i++) // ~20 ms of debouncing
+    {
+        hw.tap.Debounce();
+        System::Delay(1);
+    }
+    if(hw.tap.Pressed())
+    {
+        cfg.ledLevel = (cfg.ledLevel + 1) % 3;
+        storage.Save();
+        // confirmation: show the new level on all four LEDs for one second,
+        // "off" is shown as a short dim red blink
+        float    lv = kLedLevels[cfg.ledLevel];
+        uint32_t t0 = System::GetNow();
+        while(System::GetNow() - t0 < 1000)
+        {
+            for(int k = 0; k < 4; k++)
+            {
+                if(cfg.ledLevel == 2)
+                    hw.SetLed(k, (System::GetNow() - t0 < 300) ? 0.4f : 0.f, 0.f, 0.f);
+                else
+                    hw.SetLed(k, lv, lv, lv);
+            }
+            hw.UpdateLeds();
+            System::DelayUs(250);
+        }
+        // wait for release, so the button press does not toggle freeze
+        while(hw.tap.Pressed())
+        {
+            hw.tap.Debounce();
+            System::Delay(1);
+        }
+    }
+    ledScale = kLedLevels[cfg.ledLevel];
+    limiter.Init(SR);
 
     // the SDRAM is not cleared at startup
     memset(bufL, 0, sizeof(bufL));
@@ -661,9 +806,12 @@ int main(void)
     {
         // LEDs 1 and 2: left / right repeats
         //   white = forward (free-running), cyan = forward (clocked), violet = reverse
+        //   below 100 ms the repeats are too fast to blink: steady, softer light
+        const float S = ledScale;
         for(int c = 0; c < 2; c++)
         {
-            float b = ledBlink[c];
+            float b = ledSteady[c] ? 0.6f : ledBlink[c];
+            b *= S;
             if(ledBlinkRev[c] > 0.5f)
                 hw.SetLed(c, 0.7f * b, 0.f, b);
             else if(clocked)
@@ -673,17 +821,17 @@ int main(void)
         }
 
         // LED 3: filter (orange = low pass, light blue = high pass, off = neutral)
-        float lp = ledFiltLP, hp = ledFiltHP;
+        float lp = ledFiltLP * S, hp = ledFiltHP * S;
         hw.SetLed(2, lp, 0.45f * lp + 0.6f * hp, hp);
 
         // LED 4: freeze = solid red; feedback above 100% = pulsing red
         if(ledFreeze)
-            hw.SetLed(3, 1.f, 0.f, 0.f);
+            hw.SetLed(3, S, 0.f, 0.f);
         else if(ledOverFb)
         {
             float t     = (System::GetNow() % 500) / 500.f;
             float pulse = 0.5f - 0.5f * cosf(2.f * PI_F * t);
-            hw.SetLed(3, pulse, 0.f, 0.f);
+            hw.SetLed(3, pulse * S, 0.f, 0.f);
         }
         else
             hw.SetLed(3, 0.f, 0.f, 0.f);
